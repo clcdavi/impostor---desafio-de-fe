@@ -13,13 +13,19 @@ Una aplicación web minimalista y responsiva para jugar **Impostor** con temáti
 ### Durante el Juego
 1. **Cada jugador** recibe su turno para revelar su pista
 2. **Mantén presionado** la pantalla para ver:
-   - Una **pista cristiana** (Jesús, María, Fe, Gracia, etc.)
+   - Un **personaje bíblico** (Moisés, David, Pedro, etc.) si eres Discípulo
    - O la palabra **"IMPOSTOR"** si fuiste seleccionado
 3. **Suelta** para volver a ocultar
 4. ¡Presiona **Siguiente** cuando el jugador haya visto su pista!
 
+### ¿Quién Habla Primero?
+- Se elige **aleatoriamente** quién comienza a dar referencias
+- Todos los **Discípulos ven el MISMO personaje bíblico**
+- Los **Impostores no conocen el tema** 🕵️
+
 ### Revelación Final
-- Se muestran todos los jugadores y quiénes eran los impostores
+- Se muestran todos los jugadores **sin revelar inicialmente** sus roles
+- **Presiona "Revelar Impostores"** para descubrir quién era el impostor
 - Opción para **jugar de nuevo** 🎮
 
 ---
@@ -33,7 +39,10 @@ Una aplicación web minimalista y responsiva para jugar **Impostor** con temáti
 
 🎮 **Funcionalidad Completa**
 - Selección aleatoria de impostores
-- 25 pistas cristianas incluidas
+- 30+ personajes bíblicos como pistas (Moisés, David, Pedro, María, etc.)
+- Todos los Discípulos ven la MISMA pista en la ronda
+- Selección aleatoria de quién habla primero
+- Revelación de impostores con botón especial
 - Reveal/Hide con touch y mouse
 - Modo oscuro disponible
 - Persistencia de tema en navegador
@@ -118,15 +127,15 @@ impostor/
 
 ## Personalización
 
-### Agregar más pistas cristianas
+### Agregar más personajes bíblicos
 
-Edita el array `christianHints` en `index.html`:
+Edita el array `biblicalCharacters` en `index.html`:
 
 ```javascript
-const christianHints = [
-    'Jesús', 'María', 'Pentecostés', 'Salvación', 'Gracia',
-    // Agrega tus propias pistas aquí:
-    'Tu Pista Aquí', 'Otra Pista Más'
+const biblicalCharacters = [
+    'Adán', 'Eva', 'Noé', 'Abraham', 'Isaac',
+    // Agrega tus propios personajes aquí:
+    'Tu Personaje Aquí', 'Otro Personaje Más'
 ];
 ```
 
@@ -170,7 +179,8 @@ Modifica la línea de Google Fonts en el `<head>` o añade tus propias fuentes.
 
 🎯 **Juego Estratégico**
 - Los impostores no saben cuál es la pista (solo ven "IMPOSTOR")
-- Los creyentes saben el tema, deben encontrar a los impostores
+- Los discípulos TODOS saben el mismo personaje bíblico
+- Deben detectar quién está dando referencias falsas
 - ¡Descubre quién miente! 🕵️
 
 👥 **Mejor Experiencia**

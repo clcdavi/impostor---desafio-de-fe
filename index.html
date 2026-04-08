@@ -578,6 +578,27 @@
             </div>
         </div>
 
+        <!-- PANTALLA DE QUIÉN HABLA PRIMERO -->
+        <div id="speakerScreen" class="screen">
+            <div class="header">
+                <h1>¡A Jugar!</h1>
+                <p>Todos han visto sus pistas</p>
+            </div>
+
+            <div style="margin-top: 60px; text-align: center;">
+                <p style="font-size: 1.1rem; margin-bottom: 30px; color: var(--color-secondary);">
+                    <strong>Quien comienza a dar referencias:</strong>
+                </p>
+                <div style="background: linear-gradient(135deg, var(--color-primary), var(--color-secondary)); border-radius: 20px; padding: 50px 30px; color: white;">
+                    <p id="speakerName" style="font-size: 2.5rem; font-weight: 700; margin: 0;">Jugador 1</p>
+                </div>
+            </div>
+
+            <div class="controls" style="margin-top: 50px;">
+                <button class="btn-primary" id="continueToResultsBtn">Continuar</button>
+            </div>
+        </div>
+
         <!-- PANTALLA FINAL -->
         <div id="resultsScreen" class="screen">
             <div class="header">
@@ -590,7 +611,8 @@
             <div class="results-container" id="resultsContainer"></div>
 
             <div class="controls">
-                <button class="btn-primary" id="playAgainBtn">Jugar de Nuevo</button>
+                <button class="btn-primary" id="revealImpostorsBtn">Revelar Impostores</button>
+                <button class="btn-secondary" id="playAgainBtn">Jugar de Nuevo</button>
             </div>
         </div>
     </div>
@@ -603,7 +625,9 @@
             currentPlayerIndex: 0,
             gameStarted: false,
             darkMode: localStorage.getItem('darkMode') === 'true',
-            currentHint: null
+            currentHint: null,
+            impostorsRevealed: false,
+            speaker: null
         };
 
         // ============ ELEMENTOS DEL DOM ============
@@ -623,13 +647,20 @@
             nextParticipantBtn: document.getElementById('nextParticipantBtn'),
             backFromHintBtn: document.getElementById('backFromHintBtn'),
 
+            // Speaker Screen
+            speakerScreen: document.getElementById('speakerScreen'),
+            speakerName: document.getElementById('speakerName'),
+            continueToResultsBtn: document.getElementById('continueToResultsBtn'),
+
             // Results Screen
             resultsContainer: document.getElementById('resultsContainer'),
+            revealImpostorsBtn: document.getElementById('revealImpostorsBtn'),
             playAgainBtn: document.getElementById('playAgainBtn'),
 
             // Screens
             configScreen: document.getElementById('configScreen'),
             hintScreen: document.getElementById('hintScreen'),
+            speakerScreen: document.getElementById('speakerScreen'),
             resultsScreen: document.getElementById('resultsScreen'),
 
             // Theme
@@ -705,6 +736,8 @@
             elements.startGameBtn.addEventListener('click', startGame);
             elements.nextParticipantBtn.addEventListener('click', nextParticipant);
             elements.backFromHintBtn.addEventListener('click', backToConfig);
+            elements.continueToResultsBtn.addEventListener('click', continueToResults);
+            elements.revealImpostorsBtn.addEventListener('click', revealImpostors);
             elements.playAgainBtn.addEventListener('click', backToConfig);
             elements.themeToggle.addEventListener('click', toggleTheme);
 
@@ -777,11 +810,21 @@
             state.currentPlayerIndex++;
 
             if (state.currentPlayerIndex >= state.players.length) {
-                showScreen('resultsScreen');
-                renderResults();
+                showSpeakerScreen();
             } else {
                 updateHintScreen();
             }
+        }
+
+        function showSpeakerScreen() {
+            // Seleccionar aleatoriamente quién habla primero
+            const randomIndex = Math.floor(Math.random() * state.players.length);
+            state.speaker = randomIndex;
+
+            elements.speakerName.textContent = state.players[randomIndex].name;
+            state.impostorsRevealed = false;
+
+            showScreen('speakerScreen');
         }
 
         function renderResults() {
@@ -790,12 +833,18 @@
             state.players.forEach((player, index) => {
                 const isImpostor = state.impostors.includes(index);
                 const div = document.createElement('div');
-                div.className = `result-item ${isImpostor ? 'impostor' : ''}`;
+                div.className = `result-item ${state.impostorsRevealed && isImpostor ? 'impostor' : ''}`;
+
+                let badgeHtml = '';
+                if (state.impostorsRevealed) {
+                    badgeHtml = `<span class="result-badge ${isImpostor ? 'impostor' : 'normal'}">
+                        ${isImpostor ? 'Impostor' : 'Discípulo'}
+                    </span>`;
+                }
+
                 div.innerHTML = `
                     <span class="result-name">${player.name}</span>
-                    <span class="result-badge ${isImpostor ? 'impostor' : 'normal'}">
-                        ${isImpostor ? 'Impostor' : 'Discípulo'}
-                    </span>
+                    ${badgeHtml}
                 `;
                 elements.resultsContainer.appendChild(div);
             });
@@ -822,6 +871,17 @@
             state.gameStarted = false;
             state.currentPlayerIndex = 0;
             showScreen('configScreen');
+        }
+
+        function continueToResults() {
+            showScreen('resultsScreen');
+            renderResults();
+        }
+
+        function revealImpostors() {
+            state.impostorsRevealed = true;
+            renderResults();
+            elements.revealImpostorsBtn.style.display = 'none';
         }
 
         function toggleTheme() {
