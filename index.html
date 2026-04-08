@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impostor - Desafío de Fe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-primary: #8B7355;
+            --color-secondary: #6B8E23;
+            --color-accent: #4A90E2;
+            --color-gold: #D4AF37;
+            --color-light: #F5F1E8;
+            --color-dark: #2C2416;
+            --color-danger: #D9534F;
+            --color-success: #5CB85C;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #8B7355 0%, #6B8E23 50%, #4A90E2 100%);
+            background-attachment: fixed;
+            color: var(--color-dark);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            user-select: none;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2C3E50 50%, #34495E 100%);
+            color: var(--color-light);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: white;
+            border-radius: 20px;
+            padding: 30px 25px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        body.dark-mode .container {
+            background: #2C2416;
+            color: var(--color-light);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: var(--color-secondary);
+            font-size: 1rem;
+            font-weight: 300;
+        }
+
+        body.dark-mode .header p {
+            color: var(--color-accent);
+        }
+
+        .screen {
+            display: none;
+            animation: fadeIn 0.4s ease-in;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* PANTALLA DE CONFIGURACIÓN */
+        .config-group {
+            margin-bottom: 25px;
+        }
+
+        .config-group label {
+            display: block;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--color-primary);
+        }
+
+        body.dark-mode .config-group label {
+            color: var(--color-gold);
+        }
+
+        .config-group input[type="number"],
+        .config-group input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            border: 2px solid var(--color-secondary);
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            background: white;
+            color: var(--color-dark);
+            transition: border-color 0.3s;
+        }
+
+        body.dark-mode .config-group input[type="number"],
+        body.dark-mode .config-group input[type="text"] {
+            background: #3C3C3C;
+            color: var(--color-light);
+            border-color: var(--color-accent);
+        }
+
+        .config-group input[type="number"]:focus,
+        .config-group input[type="text"]:focus {
+            outline: none;
+            border-color: var(--color-accent);
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .slider-container input[type="range"] {
+            flex: 1;
+            height: 8px;
+            border-radius: 5px;
+            background: var(--color-secondary);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider-container input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--color-gold);
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .slider-container input[type="range"]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--color-gold);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .slider-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--color-accent);
+            min-width: 50px;
+            text-align: center;
+        }
+
+        body.dark-mode .slider-value {
+            color: var(--color-gold);
+        }
+
+        .names-container {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+
+        .name-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .name-input span {
+            font-weight: 600;
+            color: var(--color-primary);
+            min-width: 30px;
+        }
+
+        body.dark-mode .name-input span {
+            color: var(--color-gold);
+        }
+
+        .name-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--color-secondary);
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            background: white;
+            color: var(--color-dark);
+        }
+
+        body.dark-mode .name-input input {
+            background: #3C3C3C;
+            color: var(--color-light);
+            border-color: var(--color-accent);
+        }
+
+        /* PANTALLA DE PISTAS */
+        .participants-counter {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--color-secondary);
+        }
+
+        body.dark-mode .participants-counter {
+            color: var(--color-accent);
+        }
+
+        .hint-reveal-area {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            border-radius: 20px;
+            padding: 60px 40px;
+            text-align: center;
+            cursor: pointer;
+            margin: 30px 0;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.dark-mode .hint-reveal-area {
+            background: linear-gradient(135deg, #4A4A4A, #2C3E50);
+        }
+
+        .hint-reveal-area::before {
+            content: 'Mantén presionado';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            font-weight: 300;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .hint-reveal-area.revealing::before {
+            opacity: 0;
+        }
+
+        .hint-text {
+            color: white;
+            font-size: 3rem;
+            font-weight: 700;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .hint-reveal-area.revealing .hint-text {
+            opacity: 1;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 15px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--color-accent), var(--color-secondary));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: var(--color-light);
+            color: var(--color-primary);
+            border: 2px solid var(--color-primary);
+        }
+
+        body.dark-mode .btn-secondary {
+            background: #3C3C3C;
+            color: var(--color-light);
+            border-color: var(--color-accent);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-danger {
+            background: var(--color-danger);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--color-success);
+            color: white;
+        }
+
+        /* PANTALLA FINAL */
+        .results-container {
+            margin: 30px 0;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: var(--color-light);
+            border-left: 4px solid var(--color-secondary);
+            border-radius: 8px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        body.dark-mode .result-item {
+            background: #3C3C3C;
+            border-left-color: var(--color-accent);
+        }
+
+        .result-item.impostor {
+            border-left-color: var(--color-danger);
+        }
+
+        .result-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .result-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .result-badge.impostor {
+            background: var(--color-danger);
+            color: white;
+        }
+
+        .result-badge.normal {
+            background: var(--color-success);
+            color: white;
+        }
+
+        /* UTILIDADES */
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-20 {
+            margin-top: 20px;
+        }
+
+        .mb-20 {
+            margin-bottom: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 50%;
+            background: var(--color-gold);
+            color: var(--color-dark);
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        body.dark-mode .theme-toggle {
+            background: var(--color-accent);
+            color: white;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px 15px;
+                border-radius: 15px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .hint-reveal-area {
+                padding: 50px 20px;
+                min-height: 200px;
+            }
+
+            .hint-text {
+                font-size: 2.5rem;
+            }
+
+            button {
+                padding: 12px 15px;
+                font-size: 0.95rem;
+            }
+
+            .controls {
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .hint-text {
+                font-size: 2rem;
+            }
+
+            button {
+                padding: 10px 12px;
+                font-size: 0.9rem;
+            }
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        body.dark-mode .section-title {
+            color: var(--color-gold);
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="themeToggle" title="Cambiar tema">🌙</button>
+
+    <div class="container">
+        <!-- PANTALLA DE CONFIGURACIÓN -->
+        <div id="configScreen" class="screen active">
+            <div class="header">
+                <h1>Impostor</h1>
+                <p>Desafío de Fe</p>
+            </div>
+
+            <div class="config-group">
+                <label>Número de Jugadores</label>
+                <div class="slider-container">
+                    <input type="range" id="playerCount" min="2" max="12" value="6">
+                    <span class="slider-value" id="playerCountValue">6</span>
+                </div>
+            </div>
+
+            <div class="config-group">
+                <label>Número de Impostores</label>
+                <div class="slider-container">
+                    <input type="range" id="impostorCount" min="1" max="5" value="2">
+                    <span class="slider-value" id="impostorCountValue">2</span>
+                </div>
+            </div>
+
+            <div class="config-group">
+                <label>Nombres de Participantes</label>
+                <div class="names-container" id="namesContainer"></div>
+            </div>
+
+            <div class="controls">
+                <button class="btn-primary" id="startGameBtn">Iniciar Juego</button>
+            </div>
+        </div>
+
+        <!-- PANTALLA DE PISTAS -->
+        <div id="hintScreen" class="screen">
+            <div class="header">
+                <h1>Impostor</h1>
+                <p id="hintSubtitle">Desafío de Fe</p>
+            </div>
+
+            <div class="participants-counter">
+                <span id="participantInfo">Jugador 1 de 6</span>
+            </div>
+
+            <div class="hint-reveal-area" id="hintRevealArea">
+                <div class="hint-text" id="hintText">Tu Pista</div>
+            </div>
+
+            <div class="controls">
+                <button class="btn-primary" id="nextParticipantBtn">Siguiente</button>
+                <button class="btn-secondary" id="backFromHintBtn">Atrás</button>
+            </div>
+        </div>
+
+        <!-- PANTALLA FINAL -->
+        <div id="resultsScreen" class="screen">
+            <div class="header">
+                <h1>Fin del Juego</h1>
+                <p>Resultados</p>
+            </div>
+
+            <div class="section-title">Reveladoras</div>
+
+            <div class="results-container" id="resultsContainer"></div>
+
+            <div class="controls">
+                <button class="btn-primary" id="playAgainBtn">Jugar de Nuevo</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============ ESTADO GLOBAL ============
+        const state = {
+            players: [],
+            impostors: [],
+            currentPlayerIndex: 0,
+            gameStarted: false,
+            darkMode: localStorage.getItem('darkMode') === 'true',
+            currentHint: null
+        };
+
+        // ============ ELEMENTOS DEL DOM ============
+        const elements = {
+            // Config Screen
+            playerCount: document.getElementById('playerCount'),
+            playerCountValue: document.getElementById('playerCountValue'),
+            impostorCount: document.getElementById('impostorCount'),
+            impostorCountValue: document.getElementById('impostorCountValue'),
+            namesContainer: document.getElementById('namesContainer'),
+            startGameBtn: document.getElementById('startGameBtn'),
+
+            // Hint Screen
+            hintRevealArea: document.getElementById('hintRevealArea'),
+            hintText: document.getElementById('hintText'),
+            participantInfo: document.getElementById('participantInfo'),
+            nextParticipantBtn: document.getElementById('nextParticipantBtn'),
+            backFromHintBtn: document.getElementById('backFromHintBtn'),
+
+            // Results Screen
+            resultsContainer: document.getElementById('resultsContainer'),
+            playAgainBtn: document.getElementById('playAgainBtn'),
+
+            // Screens
+            configScreen: document.getElementById('configScreen'),
+            hintScreen: document.getElementById('hintScreen'),
+            resultsScreen: document.getElementById('resultsScreen'),
+
+            // Theme
+            themeToggle: document.getElementById('themeToggle')
+        };
+
+        const biblicalCharacters = [
+            'Adán', 'Eva', 'Noé', 'Abraham', 'Isaac',
+            'Jacob', 'Moisés', 'Aarón', 'Josué', 'David',
+            'Salomón', 'Elías', 'Eliseo', 'Jonás', 'Job',
+            'Jeremías', 'Ezequiel', 'Daniel', 'Pedro', 'Pablo',
+            'Juan', 'Mateo', 'Marcos', 'Lucas', 'María',
+            'José', 'Sansón', 'Rut', 'Ester', 'Nehemías',
+            'Tomás', 'Felipe', 'Bartolomé', 'Santiago', 'Judas'
+        ];
+
+        // ============ INICIALIZACIÓN ============
+        function init() {
+            setupTheme();
+            setupPlayerCountSlider();
+            setupImpostorCountSlider();
+            setupEventListeners();
+            renderNames();
+        }
+
+        function setupTheme() {
+            if (state.darkMode) {
+                document.body.classList.add('dark-mode');
+                elements.themeToggle.textContent = '☀️';
+            }
+        }
+
+        function setupPlayerCountSlider() {
+            elements.playerCount.addEventListener('input', (e) => {
+                const count = parseInt(e.target.value);
+                elements.playerCountValue.textContent = count;
+
+                // Actualizar máximo de impostores
+                const maxImpostors = count - 1;
+                elements.impostorCount.max = maxImpostors;
+
+                if (parseInt(elements.impostorCount.value) > maxImpostors) {
+                    elements.impostorCount.value = maxImpostors;
+                    elements.impostorCountValue.textContent = maxImpostors;
+                }
+
+                renderNames();
+            });
+        }
+
+        function setupImpostorCountSlider() {
+            elements.impostorCount.addEventListener('input', (e) => {
+                elements.impostorCountValue.textContent = e.target.value;
+            });
+        }
+
+        function renderNames() {
+            const playerCount = parseInt(elements.playerCount.value);
+            elements.namesContainer.innerHTML = '';
+
+            for (let i = 1; i <= playerCount; i++) {
+                const input = document.createElement('div');
+                input.className = 'name-input';
+                input.innerHTML = `
+                    <span>${i}</span>
+                    <input type="text" placeholder="Nombre ${i}" data-index="${i-1}">
+                `;
+                elements.namesContainer.appendChild(input);
+            }
+        }
+
+        function setupEventListeners() {
+            elements.startGameBtn.addEventListener('click', startGame);
+            elements.nextParticipantBtn.addEventListener('click', nextParticipant);
+            elements.backFromHintBtn.addEventListener('click', backToConfig);
+            elements.playAgainBtn.addEventListener('click', backToConfig);
+            elements.themeToggle.addEventListener('click', toggleTheme);
+
+            // Touch/Mouse events para reveal
+            elements.hintRevealArea.addEventListener('mousedown', startReveal);
+            elements.hintRevealArea.addEventListener('mouseup', endReveal);
+            elements.hintRevealArea.addEventListener('touchstart', startReveal);
+            elements.hintRevealArea.addEventListener('touchend', endReveal);
+            elements.hintRevealArea.addEventListener('mouseleave', endReveal);
+        }
+
+        function getPlayerNames() {
+            const inputs = document.querySelectorAll('.name-input input');
+            const names = [];
+            inputs.forEach(input => {
+                const name = input.value.trim() || input.placeholder;
+                names.push(name);
+            });
+            return names;
+        }
+
+        function startGame() {
+            const playerNames = getPlayerNames();
+            const impostorCount = parseInt(elements.impostorCount.value);
+
+            state.players = playerNames.map((name, index) => ({
+                id: index,
+                name: name
+            }));
+
+            // Seleccionar impostores aleatoriamente
+            const randomIndices = [];
+            while (randomIndices.length < impostorCount) {
+                const randomIndex = Math.floor(Math.random() * state.players.length);
+                if (!randomIndices.includes(randomIndex)) {
+                    randomIndices.push(randomIndex);
+                }
+            }
+            state.impostors = randomIndices;
+
+            // Seleccionar la pista una sola vez para toda la ronda
+            state.currentHint = biblicalCharacters[Math.floor(Math.random() * biblicalCharacters.length)];
+
+            state.gameStarted = true;
+            state.currentPlayerIndex = 0;
+
+            showScreen('hintScreen');
+            updateHintScreen();
+        }
+
+        function updateHintScreen() {
+            const currentPlayer = state.players[state.currentPlayerIndex];
+            const isImpostor = state.impostors.includes(state.currentPlayerIndex);
+
+            elements.participantInfo.textContent =
+                `${currentPlayer.name} (Jugador ${state.currentPlayerIndex + 1} de ${state.players.length})`;
+
+            // Mostrar pista (la misma para todos los no-impostores)
+            if (isImpostor) {
+                elements.hintText.textContent = 'IMPOSTOR';
+            } else {
+                elements.hintText.textContent = state.currentHint;
+            }
+
+            // Reset reveal state
+            elements.hintRevealArea.classList.remove('revealing');
+        }
+
+        function nextParticipant() {
+            state.currentPlayerIndex++;
+
+            if (state.currentPlayerIndex >= state.players.length) {
+                showScreen('resultsScreen');
+                renderResults();
+            } else {
+                updateHintScreen();
+            }
+        }
+
+        function renderResults() {
+            elements.resultsContainer.innerHTML = '';
+
+            state.players.forEach((player, index) => {
+                const isImpostor = state.impostors.includes(index);
+                const div = document.createElement('div');
+                div.className = `result-item ${isImpostor ? 'impostor' : ''}`;
+                div.innerHTML = `
+                    <span class="result-name">${player.name}</span>
+                    <span class="result-badge ${isImpostor ? 'impostor' : 'normal'}">
+                        ${isImpostor ? 'Impostor' : 'Discípulo'}
+                    </span>
+                `;
+                elements.resultsContainer.appendChild(div);
+            });
+        }
+
+        function startReveal(e) {
+            e.preventDefault();
+            elements.hintRevealArea.classList.add('revealing');
+        }
+
+        function endReveal(e) {
+            e.preventDefault();
+            elements.hintRevealArea.classList.remove('revealing');
+        }
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function backToConfig() {
+            state.gameStarted = false;
+            state.currentPlayerIndex = 0;
+            showScreen('configScreen');
+        }
+
+        function toggleTheme() {
+            state.darkMode = !state.darkMode;
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', state.darkMode);
+            elements.themeToggle.textContent = state.darkMode ? '☀️' : '🌙';
+        }
+
+        // Iniciar
+        init();
+    </script>
+</body>
+</html>
