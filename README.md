@@ -13,14 +13,14 @@ Una aplicación web minimalista y responsiva para jugar **Impostor** con temáti
 ### Durante el Juego
 1. **Cada jugador** recibe su turno para revelar su pista
 2. **Mantén presionado** la pantalla para ver:
-   - Un **personaje bíblico** (Moisés, David, Pedro, etc.) si eres Discípulo
+   - Una **palabra pista** (aceite, cruz, pan, etc.) si eres Discípulo
    - O la palabra **"IMPOSTOR"** si fuiste seleccionado
 3. **Suelta** para volver a ocultar
 4. ¡Presiona **Siguiente** cuando el jugador haya visto su pista!
 
 ### ¿Quién Habla Primero?
 - Se elige **aleatoriamente** quién comienza a dar referencias
-- Todos los **Discípulos ven el MISMO personaje bíblico**
+- Todos los **Discípulos ven la MISMA palabra pista**
 - Los **Impostores no conocen el tema** 🕵️
 
 ### Revelación Final
@@ -39,7 +39,7 @@ Una aplicación web minimalista y responsiva para jugar **Impostor** con temáti
 
 🎮 **Funcionalidad Completa**
 - Selección aleatoria de impostores
-- 30+ personajes bíblicos como pistas (Moisés, David, Pedro, María, etc.)
+- 20 palabras pista temáticas (aceite, cruz, manto, corona, pan, vino, etc.)
 - Todos los Discípulos ven la MISMA pista en la ronda
 - Selección aleatoria de quién habla primero
 - Revelación de impostores con botón especial
@@ -127,15 +127,15 @@ impostor/
 
 ## Personalización
 
-### Agregar más personajes bíblicos
+### Agregar o cambiar palabras pista
 
 Edita el array `biblicalCharacters` en `index.html`:
 
 ```javascript
 const biblicalCharacters = [
-    'Adán', 'Eva', 'Noé', 'Abraham', 'Isaac',
-    // Agrega tus propios personajes aquí:
-    'Tu Personaje Aquí', 'Otro Personaje Más'
+    'aceite', 'cruz', 'manto', 'corona', 'sandalia',
+    // Agrega tus propias palabras aquí:
+    'tu palabra', 'otra palabra'
 ];
 ```
 
@@ -179,7 +179,7 @@ Modifica la línea de Google Fonts en el `<head>` o añade tus propias fuentes.
 
 🎯 **Juego Estratégico**
 - Los impostores no saben cuál es la pista (solo ven "IMPOSTOR")
-- Los discípulos TODOS saben el mismo personaje bíblico
+- Los discípulos TODOS ven la misma palabra pista
 - Deben detectar quién está dando referencias falsas
 - ¡Descubre quién miente! 🕵️
 
